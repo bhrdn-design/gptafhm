@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head> 
+    <meta charset="UTF-8">
+    <title>Konversi Kalender</title>
+    <style>
+body { 
+            background-color: #1b263b; 
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(224, 225, 221, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(229, 152, 10, 0.05) 0%, transparent 40%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        } 
+        .main-container { max-width: 550px; width: 100%; background: rgba(27, 38, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 35px 30px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); text-align: center; box-sizing: border-box; }
+        h1 { color: #e0e1dd; font-family: 'Rekaa', Arial, sans-serif; font-size: 26px; margin: 0 0 8px 0; letter-spacing: 1px; } 
+        h2 { color: #8d99ae; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; margin: 0 0 30px 0; } 
+        .form-block { background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 18px; margin-bottom: 22px; border: 1px solid rgba(255, 255, 255, 0.08); }
+        .block-title { font-size: 13px; font-weight: bold; text-align: left; margin-bottom: 14px; color: #e5980a; display: flex; align-items: center; }
+        .block-title::before { content: ""; display: inline-block; width: 4px; height: 14px; background-color: #e5980a; margin-right: 8px; border-radius: 2px; }
+        .input-row { display: flex; gap: 12px; margin-bottom: 15px; }
+        .input-group { flex: 1; text-align: left; }
+        .input-group label { font-size: 11px; display: block; margin-bottom: 5px; font-weight: bold; color: #8d99ae; text-transform: uppercase; } 
+        .input-group input { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; text-align: center; font-size: 15px; font-weight: bold; color: #ffffff; background-color: rgba(255, 255, 255, 0.05); }
+        .input-group input:focus { outline: none; border-color: #e5980a; background-color: rgba(255, 255, 255, 0.08); }
+        .button-group { text-align: right; }
+        button { color: #1b263b; background-color: #e5980a; font-family: Arial, sans-serif; font-weight: bold; border: none; padding: 7px 18px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-left: 8px; transition: all 0.2s; } 
+        button:hover { background-color: #fca311; transform: translateY(-1px); }
+        .output-box { background: rgba(229, 152, 10, 0.1); border: 1px dashed #e5980a; border-radius: 8px; padding: 14px; margin: 22px 0; min-height: 26px; display: flex; align-items: center; justify-content: center; }
+        p { color: #ffffff; font-size: 15px; font-family: 'Courier New', Courier, monospace; margin: 0; font-weight: bold; }
+        .footer { font-size: 12px; color: #8d99ae; font-weight: bold; margin-top: 30px; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 18px; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <h1>KONVERSI KALENDER</h1>
+    <h2>
+        Oleh : M. Muslihul Ulum <br>
+        <span style="font-weight: bold; color: #4a548c; display: inline-block; margin-top: 4px;">Sabtu Pon, 20 Juni 2026</span>
+    </h2>
+
+    <div class="form-block">
+        <div class="block-title">Input Tanggal Masehi</div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Tanggal Masehi</label>
+                <input value="20" type="number" id="tglM">
+            </div>
+            <div class="input-group">
+                <label>Bulan Masehi</label>
+                <input value="06" type="number" id="blnM">
+            </div>
+            <div class="input-group">
+                <label>Tahun Masehi</label>
+                <input value="2026" type="number" id="thnM">
+            </div>
+        </div>
+        <div class="button-group">
+            <button onclick="BtHitungM()">Proses</button> 
+            <button onclick="BtHapusM()">Hapus</button> 
+        </div>
+    </div>
+
+    <div class="output-box">
+        <p><span id="Hasil1">Hasil Masehi akan muncul di sini...</span></p>
+    </div>
+
+    <div class="form-block">
+        <div class="block-title">Input Tanggal Hijriyah</div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Tanggal Hijriyah</label>
+                <input value="04" type="number" id="tglH">
+            </div>
+            <div class="input-group">
+                <label>Bulan Hijriyah</label>
+                <input value="01" type="number" id="blnH">
+            </div>
+            <div class="input-group">
+                <label>Tahun Hijriyah</label>
+                <input value="1448" type="number" id="thnH">
+            </div>
+        </div>
+        <div class="button-group">
+            <button onclick="BtHitungH()">Proses</button> 
+            <button onclick="BtHapusH()">Hapus</button> 
+        </div>
+    </div>
+
+    <div class="output-box">
+        <p><span id="Hasil2">Hasil Hijriyah akan muncul di sini...</span></p>
+    </div>
+
+    <div class="footer">
+        _______ SEMOGA BERMANFAAT _______
+    </div>
+</div>
+
+</body>
+
+<script>
+// Perbaikan: Ambil elemen menggunakan document.getElementById agar terbaca stabil di browser
+function BtHapusM(){
+    document.getElementById("Hasil1").innerHTML = "<i><b>Data Terhapus</b></i>";
+}
+function BtHapusH(){
+    document.getElementById("Hasil2").innerHTML = "<i><b>Data Terhapus</b></i>";
+}
+
+function BtHitungM() {
+	var TglM, BlnM, ThnM;
+	TglM = document.getElementById("tglM").value;
+	BlnM = document.getElementById("blnM").value;
+    var NamaBulanM;
+    if(BlnM==1) { NamaBulanM ="Januari"}
+	else if(BlnM==2) { NamaBulanM ="Februari"}
+	else if(BlnM==3) { NamaBulanM ="Maret"}
+	else if(BlnM==4) { NamaBulanM ="April"}
+	else if(BlnM==5) { NamaBulanM ="Mei"}
+	else if(BlnM==6) { NamaBulanM ="Juni"}
+	else if(BlnM==7) { NamaBulanM ="Juli"}
+	else if(BlnM==8) { NamaBulanM ="Agustus"}
+	else if(BlnM==9) { NamaBulanM ="September"}
+	else if(BlnM==10) { NamaBulanM ="Oktober"}
+	else if(BlnM==11) { NamaBulanM ="November"}
+	else if(BlnM==12) { NamaBulanM ="Desember"}
+	else { NamaBulanM ="Maret"}
+
+	ThnM = document.getElementById("thnM").value;
+	
+    BlnM = BlnM * 1;
+	TglM = TglM * 1;
+	ThnM = ThnM * 1;
+
+    // Memanggil rumus konversi asli bawaan Anda
+    var harpas = MiladikeHijri(TglM, BlnM, ThnM); 
+    document.getElementById("Hasil1").innerHTML = harpas;
+}
+
+function BtHitungH() {
+	var TglH, BlnH, ThnH;
+	TglH = document.getElementById("tglH").value;
+	BlnH = document.getElementById("blnH").value;
+    var NamaBulanH;
+    if(BlnH==1) { NamaBulanH ="Muharrom"}
+	else if(BlnH==2) { NamaBulanH ="Shofar"}
+	else if(BlnH==3) { NamaBulanH ="R Awal"}
+	else if(BlnH==4) { NamaBulanH ="R Akhir"}
+	else if(BlnH==5) { NamaBulanH ="J Awal"}
+	else if(BlnH==6) { NamaBulanH ="J Akhir"}
+	else if(BlnH==7) { NamaBulanH ="Rojab"}
+	else if(BlnH==8) { NamaBulanH ="Syaban"}
+	else if(BlnH==9) { NamaBulanH ="Romadlon"}
+	else if(BlnH==10) { NamaBulanH ="Syawal"}
+	else if(BlnH==11) { NamaBulanH ="Dzul Qodah"}
+	else if(BlnH==12) { NamaBulanH ="Dzul Hijjah"}
+	else { NamaBulanH ="Shofar"}
+
+	ThnH = document.getElementById("thnH").value;
+	
+    BlnH = BlnH * 1;
+	TglH = TglH * 1;
+	ThnH = ThnH * 1;
+
+    // Memanggil rumus konversi asli bawaan Anda
+    var harpas = HijrikeMiladi(TglH, BlnH, ThnH); 
+    document.getElementById("Hasil2").innerHTML = harpas;
+}
+
+// Formula Matematika Astronomi Bawaan Anda
+function Mod(data,data1) {		
+    return data - data1 * Math.floor(data/data1);			
+}
+
+const Int = x => Math.floor(x);
+
+const namaHari = ["Sabtu","Ahad","Senin","Selasa","Rabu","Kamis","Jum'at","Sabtu"]
+const namaPasaran = ["Kliwon","Legi","Pahing","Pon","Wage","Kliwon"]
+const namaBulanM = ["Desember","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
+const namaBulanH = ["Dzulhijjah","Muharram","Shafar","Rabi'ul Awal","Rabi'ul Akhir","Jumadil Awal","Jumadil Akhir","Rajab","Sya'ban","Ramadhan","Syawal","Dzulqo'dah","Dzulhijjah"]
+	
+function MiladikeHijri(D=13,m=1,Y=2013){
+    let bulanAsli = m;
+    let tahunAsli = Y;
+    
+    let A = Y*10000 + m*100+ D;
+    let G = 2 - Int(Y/100) +Int(Y/400);
+    if (A<15821015){
+        G = 0;}
+    if(m<3){
+        Y= Y-1; 
+        m= m+12;}
+    let Mjd =  Int (365.25*(Y+4716))+ Int (30.6001*(m+1))+D+G-1524;
+    let H = Mjd - 1948440;
+    let L1 = H+10632;
+    let N = Int((L1-1)/10631);
+    if(L1<1){N= N-1; }
+    let L2 = L1-10631 * N + 354;
+    let J =  Int(((10985-L2)/5316.0))* Int((50.0*L2)/17719)+Int(L2/5670.0) * Int((43.0*L2)/15238);
+    let L3= L2- Int(((30-J)/15.0))*Int((17719.0*J)/50) -
+        Int((J/16.0))*Int((15238.0*J)/43)+29;
+    let Mh =Int((24.0*L3)/709);
+    let Dh= L3 - Int((709.0*Mh)/24);
+    let Yh = 30 * N + J -30;
+    let L = Mjd +16;
+    let Hr = L % 7;
+    let Ps = L % 5 ;
+    
+    const hasil = `Hari = ${namaHari[Hr]} ${namaPasaran[Ps]}, ${D} ${namaBulanM[bulanAsli]} ${tahunAsli} M / ${Dh} ${namaBulanH[Mh]} ${Yh} H`;
+    return hasil;
+}
+
+function HijrikeMiladi(H,m,Y){
+    const Hh = Int ((11.0*Y+3)/30)+354*Y+30*m - Int ((m-1)/2.0)+H-385;
+    if(Y<0){
+        Hh= Hh-1;}
+    const Z = Hh+1948440;
+    const alpha = Int ((Z-1867216.25)/36524.25);
+    const A =  Z<2299161?Z:Z+1+alpha-Int(alpha/4);
+    const B = A+1524;
+    const C = Int((B-122.1)/365.25);
+    const D = Int(365.25*C);
+    const E = Int((B-D)/30.6001);
+    
+    const Dm   =   Int(B-D-Int(30.6001*E))
+    const Mm   =   E<14?E-1:E-13;
+    const Ym   =   Mm>2?C-4716:C-4715;
+    const L =Z+16;
+    const Hr= L % 7;
+    const Ps= L % 5;
+    
+    const hasil = `Hari = ${namaHari[Hr]} ${namaPasaran[Ps]}, ${Dm} ${namaBulanM[Mm]} ${Ym} M / ${H} ${namaBulanH[m]} ${Y} H`;
+    return hasil;
+}
+</script>
+</html>

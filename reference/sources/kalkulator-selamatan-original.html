@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Selamatan NU</title>
+    <style>
+        :root { --primary: #008000; --bg: #f4f6f7; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%; max-width: 450px; }
+        h2 { color: var(--primary); text-align: center; margin-bottom: 5px; }
+        .copyright { text-align: center; font-size: 12px; color: #666; margin-bottom: 20px; font-style: italic; }
+        .group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #006400; }
+        .result { margin-top: 25px; border-top: 2px solid #eee; padding-top: 20px; }
+        .item { padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .item b { color: var(--primary); display: block; }
+        .hijri-text { color: #8b4513; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>📿 Kalkulator Selamatan</h2>
+    <div class="copyright">Hak Cipta : M. SHOLEH BAKHRUDDIN</div>
+    
+    <div class="group">
+        <label>Tanggal Wafat:</label>
+        <input type="date" id="tglInput">
+    </div>
+    
+    <div class="group">
+        <label>Waktu Wafat:</label>
+        <select id="waktuInput">
+            <option value="siang">Sebelum Maghrib (Ikut Hari Ini)</option>
+            <option value="malam">Setelah Maghrib (Ikut Hari Besok)</option>
+        </select>
+    </div>
+    
+    <button onclick="hitung()">Hitung Selamatan</button>
+
+    <div id="hasil" class="result"></div>
+</div>
+
+<script>
+    function hitung() {
+        const inputVal = document.getElementById('tglInput').value;
+        const waktuVal = document.getElementById('waktuInput').value;
+        
+        if (!inputVal) return alert("Pilih tanggal terlebih dahulu!");
+        
+        let tglWafat = new Date(inputVal);
+        
+        // Logika Maghrib: Jika malam, tambah 1 hari
+        if (waktuVal === 'malam') {
+            tglWafat.setDate(tglWafat.getDate() + 1);
+        }
+
+        const hariArr = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const pasaranArr = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+        
+        // Nama Bulan Hijriyah sesuai permintaan
+        const namaBulanHijri = [
+            "Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir",
+            "Jumadil Awal", "Jumadil Akhir", "Rajab", "Syaban",
+            "Ramadan", "Syawal", "Dzulkaidah", "Dzulhijjah"
+        ];
+        
+        // Referensi 20 Maret 2021 = Sabtu Kliwon
+        const refDate = new Date("2021-03-20");
+
+        function getLengkap(date) {
+            // Kalkulasi Hari & Pasaran
+            const diff = Math.floor((date - refDate) / (1000 * 60 * 60 * 24));
+            const hariIdx = (6 + (diff % 7) + 7) % 7;
+            const pasaranIdx = (4 + (diff % 5) + 5) % 5;
+            
+            // Format Masehi
+            const masehi = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            
+            // Dapatkan Hijriyah (Angka)
+            const hijriObj = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { 
+                day: 'numeric', month: 'numeric', year: 'numeric' 
+            }).formatToParts(date);
+            
+            const hDay = hijriObj.find(p => p.type === 'day').value;
+            const hMonthIndex = parseInt(hijriObj.find(p => p.type === 'month').value) - 1;
+            const hYear = hijriObj.find(p => p.type === 'year').value; // PERBAIKAN: Harus p.type === 'year'
+            
+            const hijriStr = `${hDay} ${namaBulanHijri[hMonthIndex]} ${hYear} H`;
+            
+            return `${hariArr[hariIdx]} ${pasaranArr[pasaranIdx]}, ${masehi} <br> <span class="hijri-text">${hijriStr}</span>`;
+        }
+
+        // PERBAIKAN RUMUS: Hari H dihitung sebagai hari ke-1, jadi 3 hari = +2, 7 hari = +6, dst.
+        const daftarAcara = [
+            {nama: "Tanggal Wafat (Acuan)", hari: 0},
+            {nama: "3 Harian (Nelung Dina)", hari: 2},
+            {nama: "7 Harian (Mitung Dina)", hari: 6},
+            {nama: "40 Harian (Matang Puluh)", hari: 39},
+            {nama: "100 Harian (Nyatus)", hari: 99},
+            {nama: "Pendhak 1 (Mendhak Pisan)", hari: 354},
+            {nama: "Pendhak 2 (Mendhak Pindo)", hari: 708},
+            {nama: "1000 Harian (Nyewu)", hari: 999}
+        ];
+
+        let htmlContent = "";
+        daftarAcara.forEach(item => {
+            let nextDate = new Date(tglWafat);
+            nextDate.setDate(tglWafat.getDate() + item.hari);
+            htmlContent += `<div class="item"><b>${item.nama}:</b> ${getLengkap(nextDate)}</div>`;
+        });
+        
+        document.getElementById('hasil').innerHTML = htmlContent;
+    }
+</script>
+
+</body>
+</html>
